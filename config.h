@@ -68,8 +68,7 @@ static Key keys[] = {
     // close
 	{ MODKEY|ShiftMask,     XK_e,       quit,           {0} },
 	{ MODKEY|ShiftMask,     XK_q,       killclient,     {0} },
-    { MODKEY,               XK_l,       spawn,          SHCMD("st -e i3lock") },
-    { MODKEY|ShiftMask,     XK_l,       spawn,          SHCMD("st -e sudo shutdown -h 0") },
+    { MODKEY|ShiftMask,     XK_s,       spawn,          SHCMD("st -e sudo shutdown -h 0") },
 
     //spawn softwares
 	{ MODKEY,               XK_d,       spawn,          {.v = dmenucmd } },
@@ -77,7 +76,6 @@ static Key keys[] = {
     { MODKEY,               XK_b,       spawn,          {.v = qutebrowser } },
     { MODKEY,               XK_n,       spawn,          SHCMD("st -e nnn") },
     { MODKEY,               XK_t,       spawn,          SHCMD("st -e calcurse") },
-    { MODKEY,               XK_t,       spawn,          SHCMD("st -e cal -y") },
 
     //soud volume
     //{ MODKEY,              XK_plus,    spawn,          {.v = st -e nnn } },
