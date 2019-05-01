@@ -22,7 +22,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "😣", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -30,8 +30,8 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class            instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",           NULL,       NULL,       0,            1,           -1 },
-	{ "qutebrowser",    NULL,       NULL,       1<<7,         1,           -1 },
+	//{ "Gimp",           NULL,       NULL,       0,            1,           -1 },
+	{ "qutebrowser",    NULL,       NULL,       1<<8,         1,           -1 },
 };
 
 /* layout(s) */
@@ -73,9 +73,10 @@ static Key keys[] = {
     //spawn softwares
 	{ MODKEY,               XK_d,       spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,     XK_Return,  spawn,          {.v = termcmd } },
-    { MODKEY,               XK_b,       spawn,          {.v = qutebrowser } },
     { MODKEY,               XK_n,       spawn,          SHCMD("st -e nnn") },
+    { MODKEY,               XK_b,       spawn,          {.v = qutebrowser } },
     { MODKEY,               XK_t,       spawn,          SHCMD("st -e calcurse") },
+    { MODKEY,               XK_m,       spawn,          SHCMD("st -e neomutt") },
 
     //soud volume
     //{ MODKEY,              XK_plus,    spawn,          {.v = st -e nnn } },
@@ -96,15 +97,15 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,     XK_i,       incnmaster,     {.i = -1 } },
 
     //layouts
-	{ MODKEY,               XK_t,       setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,               XK_f,       setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,               XK_m,       setlayout,      {.v = &layouts[2]} },
+	{ MODKEY|ShiftMask,     XK_t,       setlayout,      {.v = &layouts[0]} },
+	{ MODKEY|ShiftMask,     XK_f,       setlayout,      {.v = &layouts[1]} },
+	{ MODKEY|ShiftMask,     XK_m,       setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,               XK_space,   setlayout,      {0} },
 	{ MODKEY|ShiftMask,     XK_space,   togglefloating, {0} },
 
     // ?????
-	{ MODKEY,               XK_k,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,     XK_k,      tag,            {.ui = ~0 } },
+	{ MODKEY,               XK_c,       view,           {.ui = ~0 } },
+	{ MODKEY|ShiftMask,     XK_c,       tag,            {.ui = ~0 } },
 	{ MODKEY,               XK_z,       focusmon,       {.i = -1 } },
 	{ MODKEY,               XK_x,       focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,     XK_z,       tagmon,         {.i = -1 } },
