@@ -31,7 +31,7 @@ static const Rule rules[] = {
 	 */
 	/* class            instance    title       tags mask     isfloating   monitor */
 	//{ "Gimp",           NULL,       NULL,       0,            1,           -1 },
-	{ "qutebrowser",    NULL,       NULL,       1<<8,         1,           -1 },
+	{ "qutebrowser",    NULL,       NULL,       1<<6,         1,           -1 },
 };
 
 /* layout(s) */
