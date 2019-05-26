@@ -35,16 +35,16 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "", "", "" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class            instance    title       tags mask     isfloating   monitor */
-	//{ "Gimp",           NULL,       NULL,       0,            1,           -1 },
-	{ "qutebrowser",    NULL,       NULL,       1<<6,         1,           -1 },
+	/* class            instance    title           tags mask     isfloating   monitor */
+	{ "Gimp",           NULL,       NULL,           1<<6,         0,           -1 },
+	//{ NULL,             NULL,       "neomutt",      1<<8,         0,           -1 },
 };
 
 /* layout(s) */
@@ -73,60 +73,64 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *qutebrowser[]  = { "qutebrowser", NULL };
 static const char *termcmd[]  = { "st", NULL };
 
 static Key keys[] = {
 	/* modifier             key        function        argument */
-    // close
+    // Close
 	{ MODKEY|ShiftMask,     XK_e,       quit,           {0} },
 	{ MODKEY|ShiftMask,     XK_q,       killclient,     {0} },
     { MODKEY|ShiftMask,     XK_s,       spawn,          SHCMD("st -e sudo shutdown -h 0") },
+    { MODKEY|ShiftMask,     XK_l,       spawn,          SHCMD("st -e sudo . ~/dev/dotfiles/scripts/dwm/lock.sh") },
 
-    //spawn softwares
+    // Spawn softwares
 	{ MODKEY,               XK_d,       spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,     XK_Return,  spawn,          {.v = termcmd } },
-    { MODKEY,               XK_n,       spawn,          SHCMD("st -e nnn") },
-    { MODKEY,               XK_b,       spawn,          {.v = qutebrowser } },
-    { MODKEY,               XK_t,       spawn,          SHCMD("st -e calcurse") },
-    { MODKEY,               XK_m,       spawn,          SHCMD("st -e neomutt") },
 
-    //soud volume
-    //{ MODKEY,              XK_plus,    spawn,          {.v = st -e nnn } },
-    //{ MODKEY|ShiftMask,    XK_plus,    spawn,          {.v = st -e nnn } },
-    //{ MODKEY,              XK_minus,   spawn,          {.v = st -e nnn } },
-    //{ MODKEY|ShiftMask,    XK_minus,   spawn,          {.v = st -e nnn } },
-    //{ MODKEY,              XK_equal,   spawn,          {.v = st -e nnn } },
+    // Soud volume
+    { MODKEY,               XK_v,       spawn,          SHCMD("amixer -q -D pulse sset Master 10%-") },
+    { MODKEY|ShiftMask,     XK_v,       spawn,          SHCMD("amixer -q -D pulse sset Master 10%+") },
+    { MODKEY|ControlMask,   XK_v,       spawn,          SHCMD("amixer -q -D pulse sset Master toggle") },
 
-	{ MODKEY|ShiftMask,     XK_b,       togglebar,      {0} },
-
-    //resize
+    // Resize
 	{ MODKEY,               XK_h,       setmfact,       {.f = -0.05} },
 	{ MODKEY,               XK_l,       setmfact,       {.f = +0.05} },
 
-    //movement windows
+    // Master
+    // Move to master area
 	{ MODKEY,               XK_Return,  zoom,           {0} },
-	{ MODKEY,               XK_i,       incnmaster,     {.i = +1 } },
-	{ MODKEY|ShiftMask,     XK_i,       incnmaster,     {.i = -1 } },
+    // Increase/decrease number of windows in master area
+	{ MODKEY|ShiftMask,     XK_i,       incnmaster,     {.i = +1 } },
+	{ MODKEY,               XK_i,       incnmaster,     {.i = -1 } },
 
     //layouts
 	{ MODKEY|ShiftMask,     XK_t,       setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,     XK_f,       setlayout,      {.v = &layouts[1]} },
 	{ MODKEY|ShiftMask,     XK_m,       setlayout,      {.v = &layouts[2]} },
+    // Toggle mono
 	{ MODKEY,               XK_space,   setlayout,      {0} },
+    // One window floating
 	{ MODKEY|ShiftMask,     XK_space,   togglefloating, {0} },
+    // Full Screen
+	{ MODKEY|ShiftMask,     XK_b,       togglebar,      {0} },
+
+    // Show window in every tag
+	{ MODKEY,               XK_0,       tag,            {.ui = ~0 } },
 
     // ?????
-	{ MODKEY,               XK_c,       view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,     XK_c,       tag,            {.ui = ~0 } },
-	{ MODKEY,               XK_z,       focusmon,       {.i = -1 } },
-	{ MODKEY,               XK_x,       focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,     XK_z,       tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,     XK_x,       tagmon,         {.i = +1 } },
+	{ MODKEY|ShiftMask,     XK_0,       view,           {.ui = ~0 } },
 
-    // movement
+    // ?????
+	{ MODKEY,               XK_comma,   focusmon,       {.i = -1 } },
+	{ MODKEY,               XK_period,  focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,     XK_comma,   tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,     XK_period,  tagmon,         {.i = +1 } },
+
+    // Movement per window
 	{ MODKEY,               XK_j,       focusstack,     {.i = +1 } },
 	{ MODKEY,               XK_k,       focusstack,     {.i = -1 } },
+
+    // Movement per tag
 	TAGKEYS(                XK_1,                      0)
 	TAGKEYS(                XK_2,                      1)
 	TAGKEYS(                XK_3,                      2)
@@ -136,6 +140,7 @@ static Key keys[] = {
 	TAGKEYS(                XK_7,                      6)
 	TAGKEYS(                XK_8,                      7)
 	TAGKEYS(                XK_9,                      8)
+    // back to previous tag
 	{ MODKEY,               XK_Tab,     view,           {0} },
 };
 
