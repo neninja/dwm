@@ -43,7 +43,6 @@
 
 #include "drw.h"
 #include "util.h"
-#include "focusurgent.c"
 
 /* macros */
 #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
