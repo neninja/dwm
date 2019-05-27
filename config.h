@@ -1,3 +1,4 @@
+#include "selfrestart.c"
 /* See LICENSE file for copyright and license details. */
 // https://dwm.suckless.org/customisation
 
@@ -74,7 +75,6 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
-
 static Key keys[] = {
 	/* modifier             key        function        argument */
     // Close
@@ -82,6 +82,10 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,     XK_q,       killclient,     {0} },
     { MODKEY|ShiftMask,     XK_s,       spawn,          SHCMD("st -e sudo shutdown -h 0") },
     { MODKEY|ShiftMask,     XK_l,       spawn,          SHCMD("st -e sudo . ~/dev/dotfiles/scripts/dwm/lock.sh") },
+
+    { MODKEY|ShiftMask,             XK_r,      self_restart,   {0} },
+
+    { MODKEY|ShiftMask,                       XK_u,      focusurgent,    {0} },
 
     // Spawn softwares
 	{ MODKEY,               XK_d,       spawn,          {.v = dmenucmd } },
@@ -131,15 +135,17 @@ static Key keys[] = {
 	{ MODKEY,               XK_k,       focusstack,     {.i = -1 } },
 
     // Movement per tag
-	TAGKEYS(                XK_1,                      0)
-	TAGKEYS(                XK_2,                      1)
-	TAGKEYS(                XK_3,                      2)
-	TAGKEYS(                XK_4,                      3)
-	TAGKEYS(                XK_5,                      4)
-	TAGKEYS(                XK_6,                      5)
-	TAGKEYS(                XK_7,                      6)
-	TAGKEYS(                XK_8,                      7)
-	TAGKEYS(                XK_9,                      8)
+    { MODKEY,               XK_i,       shiftview,      {.i = +1 } },
+	{ MODKEY,               XK_u,       shiftview,      {.i = -1 } },
+	TAGKEYS(                XK_1,                           0)
+	TAGKEYS(                XK_2,                           1)
+	TAGKEYS(                XK_3,                           2)
+	TAGKEYS(                XK_4,                           3)
+	TAGKEYS(                XK_5,                           4)
+	TAGKEYS(                XK_6,                           5)
+	TAGKEYS(                XK_7,                           6)
+	TAGKEYS(                XK_8,                           7)
+	TAGKEYS(                XK_9,                           8)
     // back to previous tag
 	{ MODKEY,               XK_Tab,     view,           {0} },
 };

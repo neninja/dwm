@@ -43,6 +43,7 @@
 
 #include "drw.h"
 #include "util.h"
+#include "focusurgent.c"
 
 /* macros */
 #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
@@ -233,6 +234,8 @@ static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
+static void shiftview(const Arg *arg);
+static void focusurgent(const Arg *arg);
 
 /* variables */
 static const char broken[] = "broken";
@@ -431,9 +434,15 @@ buttonpress(XEvent *e)
 	}
 	if (ev->window == selmon->barwin) {
 		i = x = 0;
-		do
+        unsigned int occ = 0;
+		for(c = m->clients; c; c = c->next)
+			occ |= c->tags;
+		do {
+			/* do not reserve space for vacant tags */
+			if(!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+				continue;
 			x += TEXTW(tags[i]);
-		while (ev->x >= x && ++i < LENGTH(tags));
+        } while (ev->x >= x && ++i < LENGTH(tags));
 		if (i < LENGTH(tags)) {
 			click = ClkTagBar;
 			arg.ui = 1 << i;
@@ -729,6 +738,9 @@ drawbar(Monitor *m)
 	}
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
+        /* do not draw vacant tags */
+		if(!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+			continue;
 		w = TEXTW(tags[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
@@ -745,7 +757,7 @@ drawbar(Monitor *m)
 	if ((w = m->ww - sw - x) > bh) {
 		if (m->sel) {
 			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
-			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
+            drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
 			if (m->sel->isfloating)
 				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
 		} else {
@@ -2138,6 +2150,36 @@ zoom(const Arg *arg)
 	pop(c);
 }
 
+void
+shiftview(const Arg *arg) {
+	Arg shifted;
+
+	if(arg->i > 0) // left circular shift
+		shifted.ui = (selmon->tagset[selmon->seltags] << arg->i)
+		   | (selmon->tagset[selmon->seltags] >> (LENGTH(tags) - arg->i));
+
+	else // right circular shift
+		shifted.ui = selmon->tagset[selmon->seltags] >> (- arg->i)
+		   | selmon->tagset[selmon->seltags] << (LENGTH(tags) + arg->i);
+
+	view(&shifted);
+}
+
+static void
+focusurgent(const Arg *arg) {
+	Client *c;
+	int i;
+	for(c=selmon->clients; c && !c->isurgent; c=c->next);
+	if(c) {
+		for(i=0; i < LENGTH(tags) && !((1 << i) & c->tags); i++);
+		if(i < LENGTH(tags)) {
+			const Arg a = {.ui = 1 << i};
+			view(&a);
+			focus(c);
+		}
+	}
+}
+
 int
 main(int argc, char *argv[])
 {
@@ -2161,3 +2203,4 @@ main(int argc, char *argv[])
 	XCloseDisplay(dpy);
 	return EXIT_SUCCESS;
 }
+
