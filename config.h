@@ -1,10 +1,12 @@
-#include "selfrestart.c"
+#include "push.c"
+
 /* See LICENSE file for copyright and license details. */
 // https://dwm.suckless.org/customisation
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int minwsz    = 20;       /* Minimal heigt of a client for smfact */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 //static const char *fonts[]          = { "monospace:size=10" };
@@ -50,6 +52,7 @@ static const Rule rules[] = {
 
 /* layout(s) */
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float smfact     = 0.00; /* factor of tiled clients [0.00..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
@@ -79,11 +82,15 @@ static Key keys[] = {
 	/* modifier             key        function        argument */
     // Close
 	{ MODKEY|ShiftMask,     XK_e,       quit,           {0} },
+    // Restart
+	{ MODKEY|ShiftMask,     XK_r,       quit,           {1} }, 
 	{ MODKEY|ShiftMask,     XK_q,       killclient,     {0} },
     { MODKEY|ShiftMask,     XK_s,       spawn,          SHCMD("st -e sudo shutdown -h 0") },
-    { MODKEY|ShiftMask,     XK_l,       spawn,          SHCMD("st -e sudo . ~/dev/dotfiles/scripts/dwm/lock.sh") },
+//    { MODKEY|ShiftMask,     XK_l,       spawn,          SHCMD("st -e sudo . ~/dev/dotfiles/scripts/dwm/lock.sh") },
 
-    { MODKEY|ShiftMask,             XK_r,      self_restart,   {0} },
+
+
+
 
     { MODKEY|ShiftMask,                       XK_u,      focusurgent,    {0} },
 
@@ -99,6 +106,8 @@ static Key keys[] = {
     // Resize
 	{ MODKEY,               XK_h,       setmfact,       {.f = -0.05} },
 	{ MODKEY,               XK_l,       setmfact,       {.f = +0.05} },
+	{ MODKEY,     XK_plus,      setsmfact,      {.f = +0.05} },
+	{ MODKEY,    XK_minus,      setsmfact,      {.f = -0.05} },
 
     // Master
     // Move to master area
@@ -133,10 +142,12 @@ static Key keys[] = {
     // Movement per window
 	{ MODKEY,               XK_j,       focusstack,     {.i = +1 } },
 	{ MODKEY,               XK_k,       focusstack,     {.i = -1 } },
+    { MODKEY|ControlMask,   XK_j,       pushdown,       {0} },
+	{ MODKEY|ControlMask,   XK_k,       pushup,         {0} },
 
     // Movement per tag
-    { MODKEY,               XK_i,       shiftview,      {.i = +1 } },
-	{ MODKEY,               XK_u,       shiftview,      {.i = -1 } },
+    { MODKEY,               XK_Tab,       shiftview,      {.i = +1 } },
+	{ MODKEY|ShiftMask,               XK_Tab,       shiftview,      {.i = -1 } },
 	TAGKEYS(                XK_1,                           0)
 	TAGKEYS(                XK_2,                           1)
 	TAGKEYS(                XK_3,                           2)
@@ -147,7 +158,7 @@ static Key keys[] = {
 	TAGKEYS(                XK_8,                           7)
 	TAGKEYS(                XK_9,                           8)
     // back to previous tag
-	{ MODKEY,               XK_Tab,     view,           {0} },
+	{ MODKEY|ControlMask,               XK_Tab,     view,           {0} },
 };
 
 /* button definitions */
