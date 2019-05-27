@@ -39,7 +39,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "1", "2", "3", "4", "5" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -87,21 +87,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,     XK_r,       quit,           {1} }, 
 	{ MODKEY|ShiftMask,     XK_q,       killclient,     {0} },
     { MODKEY|ShiftMask,     XK_s,       spawn,          SHCMD("st -e sudo shutdown -h 0") },
-//    { MODKEY|ShiftMask,     XK_l,       spawn,          SHCMD("st -e sudo . ~/dev/dotfiles/scripts/dwm/lock.sh") },
-
-
-    	{ Mod4Mask,						XK_Up,						moveresize,			{.v = "0x -25y 0w 0h"} },
-	{ Mod4Mask,						XK_Down,					moveresize,			{.v = "0x 25y 0w 0h"} },
-	{ Mod4Mask,						XK_Left,					moveresize,			{.v = "-25x 0y 0w 0h"} },
-	{ Mod4Mask,						XK_Right,					moveresize,			{.v = "25x 0y 0w 0h"} },
-	{ Mod4Mask|ShiftMask,			XK_Up,						moveresize,			{.v = "0x 0y 0w -25h"} },
-	{ Mod4Mask|ShiftMask,			XK_Down,					moveresize,			{.v = "0x 0y 0w 25h"} },
-	{ Mod4Mask|ShiftMask,			XK_Left,					moveresize,			{.v = "0x 0y -25w 0h"} },
-{ Mod4Mask|ShiftMask, XK_Right, moveresize, {.v = "0x 0y 25w 0h"} },
-
-
-
-    { MODKEY|ShiftMask,                       XK_u,      focusurgent,    {0} },
+    { MODKEY|ShiftMask,     XK_w,       spawn,          SHCMD("st -e sudo . ~/dev/dotfiles/scripts/dwm/lock.sh") },
 
     // Spawn softwares
 	{ MODKEY,               XK_d,       spawn,          {.v = dmenucmd } },
@@ -115,8 +101,8 @@ static Key keys[] = {
     // Resize
 	{ MODKEY,               XK_h,       setmfact,       {.f = -0.05} },
 	{ MODKEY,               XK_l,       setmfact,       {.f = +0.05} },
-	{ MODKEY,     XK_plus,      setsmfact,      {.f = +0.05} },
-	{ MODKEY,    XK_minus,      setsmfact,      {.f = -0.05} },
+	{ MODKEY|ShiftMask,     XK_l,       setsmfact,      {.f = +0.05} },
+	{ MODKEY|ShiftMask,     XK_h,       setsmfact,      {.f = -0.05} },
 
     // Master
     // Move to master area
@@ -126,20 +112,20 @@ static Key keys[] = {
 	{ MODKEY,               XK_i,       incnmaster,     {.i = -1 } },
 
     //layouts
-	{ MODKEY|ShiftMask,     XK_t,       setlayout,      {.v = &layouts[0]} },
-	{ MODKEY|ShiftMask,     XK_f,       setlayout,      {.v = &layouts[1]} },
-	{ MODKEY|ShiftMask,     XK_m,       setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,               XK_t,       setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,               XK_f,       setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,               XK_m,       setlayout,      {.v = &layouts[2]} },
     // Toggle mono
 	{ MODKEY,               XK_space,   setlayout,      {0} },
     // One window floating
 	{ MODKEY|ShiftMask,     XK_space,   togglefloating, {0} },
     // Full Screen
-	{ MODKEY|ShiftMask,     XK_b,       togglebar,      {0} },
+	{ MODKEY,               XK_b,       togglebar,      {0} },
 
     // Show window in every tag
 	{ MODKEY,               XK_0,       tag,            {.ui = ~0 } },
 
-    // ?????
+    // View all clients in current tag
 	{ MODKEY|ShiftMask,     XK_0,       view,           {.ui = ~0 } },
 
     // ?????
@@ -153,6 +139,16 @@ static Key keys[] = {
 	{ MODKEY,               XK_k,       focusstack,     {.i = -1 } },
     { MODKEY|ControlMask,   XK_j,       pushdown,       {0} },
 	{ MODKEY|ControlMask,   XK_k,       pushup,         {0} },
+    { MODKEY|ShiftMask,     XK_u,       focusurgent,    {0} },
+    // Transform, move and resize float
+    { MODKEY,				XK_Up,		moveresize,     {.v = "0x -25y 0w 0h"} },
+	{ MODKEY,				XK_Down,	moveresize,     {.v = "0x 25y 0w 0h"} },
+	{ MODKEY,				XK_Left,	moveresize,     {.v = "-25x 0y 0w 0h"} },
+	{ MODKEY,				XK_Right,	moveresize,     {.v = "25x 0y 0w 0h"} },
+	{ MODKEY|ShiftMask,		XK_Up,		moveresize,     {.v = "0x 0y 0w -25h"} },
+	{ MODKEY|ShiftMask,		XK_Down,	moveresize,     {.v = "0x 0y 0w 25h"} },
+	{ MODKEY|ShiftMask,		XK_Left,	moveresize,     {.v = "0x 0y -25w 0h"} },
+    { MODKEY|ShiftMask,     XK_Right,   moveresize,     {.v = "0x 0y 25w 0h"} },
 
     // Movement per tag
     { MODKEY,               XK_Tab,       shiftview,      {.i = +1 } },
@@ -162,10 +158,10 @@ static Key keys[] = {
 	TAGKEYS(                XK_3,                           2)
 	TAGKEYS(                XK_4,                           3)
 	TAGKEYS(                XK_5,                           4)
-	TAGKEYS(                XK_6,                           5)
-	TAGKEYS(                XK_7,                           6)
-	TAGKEYS(                XK_8,                           7)
-	TAGKEYS(                XK_9,                           8)
+	//TAGKEYS(                XK_6,                           5)
+	//TAGKEYS(                XK_7,                           6)
+	//TAGKEYS(                XK_8,                           7)
+	//TAGKEYS(                XK_9,                           8)
     // back to previous tag
 	{ MODKEY|ControlMask,               XK_Tab,     view,           {0} },
 };
