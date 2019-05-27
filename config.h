@@ -1,4 +1,5 @@
 #include "push.c"
+#include "moveresize.c"
 
 /* See LICENSE file for copyright and license details. */
 // https://dwm.suckless.org/customisation
@@ -89,6 +90,14 @@ static Key keys[] = {
 //    { MODKEY|ShiftMask,     XK_l,       spawn,          SHCMD("st -e sudo . ~/dev/dotfiles/scripts/dwm/lock.sh") },
 
 
+    	{ Mod4Mask,						XK_Up,						moveresize,			{.v = "0x -25y 0w 0h"} },
+	{ Mod4Mask,						XK_Down,					moveresize,			{.v = "0x 25y 0w 0h"} },
+	{ Mod4Mask,						XK_Left,					moveresize,			{.v = "-25x 0y 0w 0h"} },
+	{ Mod4Mask,						XK_Right,					moveresize,			{.v = "25x 0y 0w 0h"} },
+	{ Mod4Mask|ShiftMask,			XK_Up,						moveresize,			{.v = "0x 0y 0w -25h"} },
+	{ Mod4Mask|ShiftMask,			XK_Down,					moveresize,			{.v = "0x 0y 0w 25h"} },
+	{ Mod4Mask|ShiftMask,			XK_Left,					moveresize,			{.v = "0x 0y -25w 0h"} },
+{ Mod4Mask|ShiftMask, XK_Right, moveresize, {.v = "0x 0y 25w 0h"} },
 
 
 
