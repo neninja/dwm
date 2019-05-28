@@ -80,88 +80,89 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static Key keys[] = {
-	/* modifier             key        function        argument */
+	/* modifier                         key        function        argument */
     // Close
-	{ MODKEY|ShiftMask,     XK_e,       quit,           {0} },
+	{ MODKEY|ShiftMask,                 XK_e,       quit,           {0} },
     // Restart
-	{ MODKEY|ShiftMask,     XK_r,       quit,           {1} }, 
-	{ MODKEY|ShiftMask,     XK_q,       killclient,     {0} },
-    { MODKEY|ShiftMask,     XK_s,       spawn,          SHCMD("st -e sudo shutdown -h 0") },
-    { MODKEY|ShiftMask,     XK_w,       spawn,          SHCMD("st -e sudo . ~/dev/dotfiles/scripts/dwm/lock.sh") },
+	{ MODKEY|ShiftMask,                 XK_r,       quit,           {1} }, 
+	{ MODKEY|ShiftMask,                 XK_q,       killclient,     {0} },
+    { MODKEY|ShiftMask,                 XK_s,       spawn,          SHCMD("st -e sudo shutdown -h 0") },
+    { MODKEY,                           XK_w,       spawn,          SHCMD("st -e . ~/dev/dotfiles/scripts/dwm/lock.sh && read") },
+    { MODKEY|ShiftMask,                 XK_w,       spawn,          SHCMD("st -e . ~/dev/dotfiles/scripts/dwm/lock.sh && read") },
 
     // Spawn softwares
-	{ MODKEY,               XK_d,       spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,     XK_Return,  spawn,          {.v = termcmd } },
+	{ MODKEY,                           XK_d,       spawn,          {.v = dmenucmd } },
+	{ MODKEY|ShiftMask,                 XK_Return,  spawn,          {.v = termcmd } },
 
     // Soud volume
-    { MODKEY,               XK_v,       spawn,          SHCMD("amixer -q -D pulse sset Master 10%-") },
-    { MODKEY|ShiftMask,     XK_v,       spawn,          SHCMD("amixer -q -D pulse sset Master 10%+") },
-    { MODKEY|ControlMask,   XK_v,       spawn,          SHCMD("amixer -q -D pulse sset Master toggle") },
+    { MODKEY,                           XK_v,       spawn,          SHCMD("amixer -q -D pulse sset Master 10%-") },
+    { MODKEY|ShiftMask,                 XK_v,       spawn,          SHCMD("amixer -q -D pulse sset Master 10%+") },
+    { MODKEY|ControlMask,               XK_v,       spawn,          SHCMD("amixer -q -D pulse sset Master toggle") },
 
     // Resize
-	{ MODKEY,               XK_h,       setmfact,       {.f = -0.05} },
-	{ MODKEY,               XK_l,       setmfact,       {.f = +0.05} },
-	{ MODKEY|ShiftMask,     XK_l,       setsmfact,      {.f = +0.05} },
-	{ MODKEY|ShiftMask,     XK_h,       setsmfact,      {.f = -0.05} },
+	{ MODKEY,                           XK_h,       setmfact,       {.f = -0.05} },
+	{ MODKEY,                           XK_l,       setmfact,       {.f = +0.05} },
+	{ MODKEY|ShiftMask,                 XK_l,       setsmfact,      {.f = +0.05} },
+	{ MODKEY|ShiftMask,                 XK_h,       setsmfact,      {.f = -0.05} },
 
     // Master
     // Move to master area
-	{ MODKEY,               XK_Return,  zoom,           {0} },
-    // Increase/decrease number of windows in master area
-	{ MODKEY|ShiftMask,     XK_i,       incnmaster,     {.i = +1 } },
-	{ MODKEY,               XK_i,       incnmaster,     {.i = -1 } },
+	{ MODKEY,                           XK_Return,  zoom,           {0} },
+    // Increase/decrease num            ber of windows in master area
+	{ MODKEY|ShiftMask,                 XK_i,       incnmaster,     {.i = +1 } },
+	{ MODKEY,                           XK_i,       incnmaster,     {.i = -1 } },
 
     //layouts
-	{ MODKEY,               XK_t,       setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,               XK_f,       setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,               XK_m,       setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                           XK_t,       setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                           XK_f,       setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                           XK_m,       setlayout,      {.v = &layouts[2]} },
     // Toggle mono
-	{ MODKEY,               XK_space,   setlayout,      {0} },
+	{ MODKEY,                           XK_space,   setlayout,      {0} },
     // One window floating
-	{ MODKEY|ShiftMask,     XK_space,   togglefloating, {0} },
+	{ MODKEY|ShiftMask,                 XK_space,   togglefloating, {0} },
     // Full Screen
-	{ MODKEY,               XK_b,       togglebar,      {0} },
+	{ MODKEY,                           XK_b,       togglebar,      {0} },
 
-    // Show window in every tag
-	{ MODKEY,               XK_0,       tag,            {.ui = ~0 } },
+    // Show window in every             tag
+	{ MODKEY,                           XK_0,       tag,            {.ui = ~0 } },
 
-    // View all clients in current tag
-	{ MODKEY|ShiftMask,     XK_0,       view,           {.ui = ~0 } },
+    // View all clients in c            urrent tag
+	{ MODKEY|ShiftMask,                 XK_0,       view,           {.ui = ~0 } },
 
     // ?????
-	{ MODKEY,               XK_comma,   focusmon,       {.i = -1 } },
-	{ MODKEY,               XK_period,  focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,     XK_comma,   tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,     XK_period,  tagmon,         {.i = +1 } },
+	{ MODKEY,                           XK_comma,   focusmon,       {.i = -1 } },
+	{ MODKEY,                           XK_period,  focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,                 XK_comma,   tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,                 XK_period,  tagmon,         {.i = +1 } },
 
     // Movement per window
-	{ MODKEY,               XK_j,       focusstack,     {.i = +1 } },
-	{ MODKEY,               XK_k,       focusstack,     {.i = -1 } },
-    { MODKEY|ControlMask,   XK_j,       pushdown,       {0} },
-	{ MODKEY|ControlMask,   XK_k,       pushup,         {0} },
-    { MODKEY|ShiftMask,     XK_u,       focusurgent,    {0} },
-    // Transform, move and resize float
-    { MODKEY,				XK_Up,		moveresize,     {.v = "0x -25y 0w 0h"} },
-	{ MODKEY,				XK_Down,	moveresize,     {.v = "0x 25y 0w 0h"} },
-	{ MODKEY,				XK_Left,	moveresize,     {.v = "-25x 0y 0w 0h"} },
-	{ MODKEY,				XK_Right,	moveresize,     {.v = "25x 0y 0w 0h"} },
-	{ MODKEY|ShiftMask,		XK_Up,		moveresize,     {.v = "0x 0y 0w -25h"} },
-	{ MODKEY|ShiftMask,		XK_Down,	moveresize,     {.v = "0x 0y 0w 25h"} },
-	{ MODKEY|ShiftMask,		XK_Left,	moveresize,     {.v = "0x 0y -25w 0h"} },
-    { MODKEY|ShiftMask,     XK_Right,   moveresize,     {.v = "0x 0y 25w 0h"} },
+	{ MODKEY,                           XK_j,       focusstack,     {.i = +1 } },
+	{ MODKEY,                           XK_k,       focusstack,     {.i = -1 } },
+    { MODKEY|ControlMask,               XK_j,       pushdown,       {0} },
+	{ MODKEY|ControlMask,               XK_k,       pushup,         {0} },
+    { MODKEY|ShiftMask,                 XK_u,       focusurgent,    {0} },
+    // Transform, move and resize
+    { MODKEY|ControlMask,				XK_Up,		moveresize,     {.v = "0x -25y 0w 0h"} },
+	{ MODKEY|ControlMask,				XK_Down,	moveresize,     {.v = "0x 25y 0w 0h"} },
+	{ MODKEY|ControlMask,				XK_Left,	moveresize,     {.v = "-25x 0y 0w 0h"} },
+	{ MODKEY|ControlMask,				XK_Right,	moveresize,     {.v = "25x 0y 0w 0h"} },
+	{ MODKEY|ControlMask|ShiftMask,		XK_Up,		moveresize,     {.v = "0x 0y 0w -25h"} },
+	{ MODKEY|ControlMask|ShiftMask,		XK_Down,	moveresize,     {.v = "0x 0y 0w 25h"} },
+	{ MODKEY|ControlMask|ShiftMask,		XK_Left,	moveresize,     {.v = "0x 0y -25w 0h"} },
+    { MODKEY|ControlMask|ShiftMask,     XK_Right,   moveresize,     {.v = "0x 0y 25w 0h"} },
 
     // Movement per tag
-    { MODKEY,               XK_Tab,       shiftview,      {.i = +1 } },
-	{ MODKEY|ShiftMask,               XK_Tab,       shiftview,      {.i = -1 } },
-	TAGKEYS(                XK_1,                           0)
-	TAGKEYS(                XK_2,                           1)
-	TAGKEYS(                XK_3,                           2)
-	TAGKEYS(                XK_4,                           3)
-	TAGKEYS(                XK_5,                           4)
-	//TAGKEYS(                XK_6,                           5)
-	//TAGKEYS(                XK_7,                           6)
-	//TAGKEYS(                XK_8,                           7)
-	//TAGKEYS(                XK_9,                           8)
+    { MODKEY,                           XK_Tab,     shiftview,      {.i = +1 } },
+	{ MODKEY|ShiftMask,                 XK_Tab,     shiftview,      {.i = -1 } },
+	TAGKEYS(                            XK_1,                           0)
+	TAGKEYS(                            XK_2,                           1)
+	TAGKEYS(                            XK_3,                           2)
+	TAGKEYS(                            XK_4,                           3)
+	TAGKEYS(                            XK_5,                           4)
+	//TAGKEYS(                            XK_6,                           5)
+	//TAGKEYS(                            XK_7,                           6)
+	//TAGKEYS(                            XK_8,                           7)
+	//TAGKEYS(                            XK_9,                           8)
     // back to previous tag
 	{ MODKEY|ControlMask,               XK_Tab,     view,           {0} },
 };
