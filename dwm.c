@@ -238,7 +238,8 @@ static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
-static void shiftview(const Arg *arg);
+//static void shiftview(const Arg *arg);
+static void view_adjacent(const Arg *arg);
 static void focusurgent(const Arg *arg);
 
 /* variables */
@@ -766,10 +767,6 @@ drawbar(Monitor *m)
 		w = TEXTW(tags[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
-		if (occ & 1 << i)
-			drw_rect(drw, x + boxs, boxs, boxw, boxw,
-				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
-				urg & 1 << i);
 		x += w;
 	}
 	w = blw = TEXTW(m->ltsymbol);
@@ -2216,19 +2213,41 @@ zoom(const Arg *arg)
 	pop(c);
 }
 
+//void
+//shiftview(const Arg *arg) {
+//	Arg shifted;
+//
+//	if(arg->i > 0) // left circular shift
+//		shifted.ui = (selmon->tagset[selmon->seltags] << arg->i)
+//		   | (selmon->tagset[selmon->seltags] >> (LENGTH(tags) - arg->i));
+//
+//	else // right circular shift
+//		shifted.ui = selmon->tagset[selmon->seltags] >> (- arg->i)
+//		   | selmon->tagset[selmon->seltags] << (LENGTH(tags) + arg->i);
+//
+//	view(&shifted);
+//}
+
 void
-shiftview(const Arg *arg) {
-	Arg shifted;
+view_adjacent(const Arg *arg)
+{
+	int i, curtags;
+	int seltag = 0;
+	Arg a;
 
-	if(arg->i > 0) // left circular shift
-		shifted.ui = (selmon->tagset[selmon->seltags] << arg->i)
-		   | (selmon->tagset[selmon->seltags] >> (LENGTH(tags) - arg->i));
+	curtags = selmon->tagset[selmon->seltags];
+	for(i = 0; i < LENGTH(tags); i++)
+		if(curtags & (1 << i)){
+			seltag = i;
+			break;
+		}
 
-	else // right circular shift
-		shifted.ui = selmon->tagset[selmon->seltags] >> (- arg->i)
-		   | selmon->tagset[selmon->seltags] << (LENGTH(tags) + arg->i);
+	seltag = (seltag + arg->i) % (int)LENGTH(tags);
+	if(seltag < 0)
+		seltag += LENGTH(tags);
 
-	view(&shifted);
+	a.i = (1 << seltag);
+	view(&a);
 }
 
 static void

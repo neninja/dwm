@@ -152,8 +152,10 @@ static Key keys[] = {
     { MODKEY|ControlMask|ShiftMask,     XK_Right,   moveresize,     {.v = "0x 0y 25w 0h"} },
 
     // Movement per tag
-    { MODKEY,                           XK_Tab,     shiftview,      {.i = +1 } },
-	{ MODKEY|ShiftMask,                 XK_Tab,     shiftview,      {.i = -1 } },
+    //{ MODKEY,                           XK_Tab,     shiftview,      {.i = +1 } },
+	//{ MODKEY|ShiftMask,                 XK_Tab,     shiftview,      {.i = -1 } },
+    { MODKEY,              XK_Tab,           view_adjacent,  { .i = +1 } },
+	{ MODKEY|ShiftMask,              XK_Tab,           view_adjacent,  { .i = -1 } },
 	TAGKEYS(                            XK_1,                           0)
 	TAGKEYS(                            XK_2,                           1)
 	TAGKEYS(                            XK_3,                           2)
