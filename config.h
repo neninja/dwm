@@ -16,9 +16,11 @@ static const char *fonts[]          = { "Noto Color Emoji:size=10", "UbuntuMono 
 static const char dmenufont[]       = "UbuntuMono Nerd Font:size=10";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
+static const char col_gray3[]       = "#888888";
+static const char col_gray4[]       = "#bbbbbb";
+static const char col_gray5[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
+static const char col_cyan2[]       = "#80ffdc";
 static const char col_blue[]        = "#58CCED";
 static const char col_black[]       = "#000000";
 static const char col_red[]         = "#ff0000";
@@ -30,9 +32,9 @@ static const char col_white[]       = "#ffffff";
 // Exige mais proxessamento!
 // Usage: echo -e "\x01 \x02 \x03 \x04 \x05"
 static const char *colors[][3]      = {
-	/*                      fg         bg         border   */
+	/*                      fg          bg       border   */
 	[SchemeNorm]    = { col_gray3,  col_gray1,  col_gray2   },
-	[SchemeSel]     = { col_gray4,  col_gray1,  col_blue    },
+	[SchemeSel]     = { col_cyan2,  col_gray1,  col_blue    },
 	[SchemeSuc]     = { col_black,  col_green,  col_cyan    },
 	[SchemeWarn]    = { col_black,  col_yellow, col_red     },
 	[SchemeUrgent]  = { col_white,  col_red,    col_red     },
