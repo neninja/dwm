@@ -16,7 +16,7 @@ static const char *fonts[]          = { "Noto Color Emoji:size=10", "UbuntuMono 
 static const char dmenufont[]       = "UbuntuMono Nerd Font:size=10";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#888888";
+static const char col_gray3[]       = "#777777";
 static const char col_gray4[]       = "#bbbbbb";
 static const char col_gray5[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
