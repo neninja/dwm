@@ -14,6 +14,7 @@ The [dwm](https://dwm.suckless.org/) with my shortcuts and some patches
     * Thanks for [TaylanTatli](https://github.com/TaylanTatli/dwm) for sharing patch on dwm 6.1
 * [MoveResize](http://dwm.suckless.org/patches/moveresize/) - MoveResize window float mode
     * Thanks for [TaylanTatli](https://github.com/TaylanTatli/dwm) for sharing patch on dwm 6.1
+* [Noborder](http://dwm.suckless.org/patches/noborder) - Remove the border when there is only one window visible
 
 ## TODO
 * [ ] NextPrev only if next/prev tag contains clients
